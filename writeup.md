@@ -1,12 +1,6 @@
 #**Traffic Sign Recognition** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Build a Traffic Sign Recognition Project**
+**Traffic Sign Recognition Project**
 
 The goals / steps of this project are the following:
 * Load the data set (see below for links to the project data set)
@@ -19,7 +13,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
+[image1]: ./output/visualization.png "Visualization"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
 [image3]: ./examples/random_noise.jpg "Random Noise"
 [image4]: ./examples/placeholder.png "Traffic Sign 1"
@@ -28,13 +22,8 @@ The goals / steps of this project are the following:
 [image7]: ./examples/placeholder.png "Traffic Sign 4"
 [image8]: ./examples/placeholder.png "Traffic Sign 5"
 
-## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
-
 ---
 ###Writeup / README
-
-####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
 You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
@@ -42,18 +31,26 @@ You're reading it! and here is a link to my [project code](https://github.com/ud
 
 ####1. Provide a basic summary of the data set. In the code, the analysis should be done using python, numpy and/or pandas methods rather than hardcoding results manually.
 
-I used the pandas library to calculate summary statistics of the traffic
-signs data set:
+I used the python library to calculate summary statistics of the traffic signs training data set following are the results before any modifications:
 
 * The size of training set is ?
+  Number of training examples = 34799
+  
 * The size of the validation set is ?
+  Number of validation examples = 4410
+  
 * The size of test set is ?
+  Number of testing examples = 12630
+  
 * The shape of a traffic sign image is ?
+  Image data shape = [32, 32]
+   
 * The number of unique classes/labels in the data set is ?
+  Number of classes = 43
 
 ####2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart showing how the training set data is distriuted. As it can be seen the data is not uniform and is distributed unevenly and there are many traffic signs that donot have more than 200 train images.
 
 ![alt text][image1]
 
@@ -61,23 +58,23 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ####1. Describe how you preprocessed the image data. What techniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, and provide example images of the additional data. Then describe the characteristics of the augmented training set like number of images in the set, number of images for each class, etc.)
 
-As a first step, I decided to convert the images to grayscale because ...
+- Data Augmentation:
+  From above question we can see that training data is not uniformly distributed. Initially i used the given data but the model could not even achieve 92% accuracy. Hence i have decided to increase the size of the training data. I followed following technique.
+ 
+ Identify all the traffic signs which have less 1000 train data. Collect all similar traffic sign images and lables that fall in this category in buffers. Pass the extracted data to a function "expand_training_data". 
+ 
+ expand_training_data function shall take one image at a time and shall
+    -  randomly rotate by +/-5 degrees 
+    -  randomly change the brightness of the image.
+ this function shall  continue this operation on the images untill total image (orignal data + new data ) size is around 1000 per traffic sign. 
+ 
+ expand_training_data shall return the new images and the new images are appened to the old image data set. Following image shows the result of Data Augmentation. It can be seen that after augmenting the data set there is better uniformity.
+![alt text][image2] 
 
-Here is an example of a traffic sign image before and after grayscaling.
-
-![alt text][image2]
-
-As a last step, I normalized the image data because ...
-
-I decided to generate additional data because ... 
-
-To add more data to the the data set, I used the following techniques because ... 
-
-Here is an example of an original image and an augmented image:
-
+- GrayScaling and Normalization:
+  After augmenting the data set ,all images are converted to grayscale and then normalized. I normalized the image data because it was easy to process 32x32x1 image than 32x32x3. Here is an example of a traffic sign image before and after grayscaling.
+  
 ![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
 
 
 ####2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
@@ -86,21 +83,30 @@ My final model consisted of the following layers:
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
- 
-
+| Input         		| 32x32x1 RGB image   							| 
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x16 	|
+| SELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x16 				|
+| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x32 	|
+| SELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 5x5x32 				|
+| Convolution 2x2	    | 1x1 stride, valid padding, outputs 4x4x64 	|
+| SELU					|												|
+| Max pooling	      	| 2x2 stride,  outputs 2x2x64 				|
+| Fully connected		| input 256, output 128       									|
+| SELU					|												|
+| Fully connected		| input 84, output 128        									|
+| SELU					|												|
+| DROPOUT					|						0.9						|
+| Fully connected		| input 43, output 128         									|
+| Softmax				|      									|
+|	reduce_mean					|												|
+|	AdamOptimizer					|												|
+|	minimizer					|												|
 
 ####3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-To train the model, I used an ....
+To train the model, I used an above mentioned model.
 
 ####4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
