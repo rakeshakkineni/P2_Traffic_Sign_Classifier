@@ -1,4 +1,4 @@
-#**Traffic Sign Recognition** 
+##**Traffic Sign Recognition** 
 
 **Traffic Sign Recognition Project**
 
@@ -25,7 +25,7 @@ The goals / steps of this project are the following:
 ---
 ###Writeup / README
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/rakeshakkineni/P2_Traffic_Sign_Classifier/P2_Traffic_Sign_Classifier.ipynb)
 
 ###Data Set Summary & Exploration
 
@@ -61,12 +61,12 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 - Data Augmentation:
   From above question we can see that training data is not uniformly distributed. Initially i used the given data but the model could not even achieve 92% accuracy. Hence i have decided to increase the size of the training data. I followed following technique.
  
- Identify all the traffic signs which have less 1000 train data. Collect all similar traffic sign images and lables that fall in this category in buffers. Pass the extracted data to a function "expand_training_data". 
+ Identify all the traffic signs which have less 1500 train data. Collect all similar traffic sign images and lables that fall in this category in buffers. Pass the extracted data to a function "expand_training_data". 
  
  expand_training_data function shall take one image at a time and shall
     -  randomly rotate by +/-5 degrees 
     -  randomly change the brightness of the image.
- this function shall  continue this operation on the images untill total image (orignal data + new data ) size is around 1000 per traffic sign. 
+ this function shall  continue this operation on the images untill total image (orignal data + new data ) size is around 1500 per traffic sign. 
  
  expand_training_data shall return the new images and the new images are appened to the old image data set. Following image shows the result of Data Augmentation. It can be seen that after augmenting the data set there is better uniformity.
 ![alt text][image2] 
