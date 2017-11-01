@@ -82,7 +82,7 @@ n_validation = len(X_valid)
 n_test = len(X_test)
 
 # What's the shape of an traffic sign image?
-image_shape = [len(X_train[1]),len(X_train[2])]
+image_shape = np.shape(X_train[0])
 
 # How many unique classes/labels there are in the dataset.
 n_classes = len(set(y_train))
@@ -802,13 +802,11 @@ print("Accuracy = {:.2f}%".format(test_accuracy*100))
 
 # ### Following is the output of  Top 5 Softmax Probabilities for Web Images.
 
-# In[24]:
+# In[26]:
 
 
 ### Print out the top five softmax probabilities for the predictions on the German traffic sign images found on the web. 
-
-actual_lables = [1,3,11,12,17,18,22,23,25,34,38]
-
+actual_lables = [1,11,12,17,18,22,23,25,34,38]
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
     ## Restore the tuned model parameters
