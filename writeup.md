@@ -40,7 +40,7 @@ I used the python library to calculate summary statistics of the traffic signs t
   Number of testing examples = 12630
   
 * The shape of a traffic sign image is ?
-  Image data shape = [32, 32, 3]
+  Image data shape = [32,32,3]
    
 * The number of unique classes/labels in the data set is ?
   Number of classes = 43
