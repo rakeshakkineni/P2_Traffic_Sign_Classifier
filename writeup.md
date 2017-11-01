@@ -304,8 +304,6 @@ The code for making predictions on my final model is located in the 26th cell of
 | 0					| Speed limit (30km/h)											|
 | 0	      			| Speed limit (50km/h)				 				|
 | 0				    |Speed limit (60km/h)     							|
-
- [38,  0,  1,  2,  3]
  
  - For the tenth image, the model is sure that this is a Keep right sign (probability of 1.0), and the image does contain a Keep right sign. The top five soft max probabilities were
 
