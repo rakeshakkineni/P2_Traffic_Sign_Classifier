@@ -145,11 +145,11 @@ If an iterative approach was chosen:
   - ###### No of Convolution Layers: ###### 
     Initial architecture was reducing the dataset size from 32 x 32 x 1 to 28 x 28 x 6 and at the maximum 16 layers by the end of second Convolution Layers. We have to recognize 43 traffic signs,i wanted to ensure that the number of filters on last Convolution Layer is more than 43. It was difficult to achieve this value without adding a thrid layer. I have changed the number of filters on first and second Convolution Layers too. Following configuration was used in the final model. This decision really helped  in increasing the accuracy. 
     
-    First Convolution Layer: 32X32x1 --> 28x28x16
-    Second Convolution Layer: 14x14x16 --> 10x10x32
-    Third Convolution Layer: 5x5x32 --> 4x4x64
+    - First Convolution Layer: 32X32x1 --> 28x28x16
+    - Second Convolution Layer: 14x14x16 --> 10x10x32
+    - Third Convolution Layer: 5x5x32 --> 4x4x64
     
-   After adding third layer i was able to get accuracies more than 94%
+    After adding third layer i was able to get accuracies more than 94%
    
   - ###### Activation Function: ######
      I have changed the activation fucntion from RELU to SELU as this move helped in getting validation accuracy of >90% with in first 5 EPOCHs. And this was a new activation function i wanted to try out the behavior of this function. 
@@ -165,14 +165,20 @@ If an iterative approach was chosen:
   - Size of Training DataSet : I have decided to increase the size of Training DataSet as i could not achieve more than 93% accuracy using the original Training DataSet. I have changed the size to 100K but it took a lot of time to train and accuracy was around 97% , to same the time i have reduced the DataSet size to 70K this gave optimal results. 
   
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+
   Most important design choice was to increase Training DataSet and adding additional convolution layer. Convolution Layer works well for classification. I chose to add dropout to  avoid over fitting.
   
 If a well known architecture was chosen:
 * What architecture was chosen?
+
   LeNet with some changes
+  
 * Why did you believe it would be relevant to the traffic sign application?
+  
   LeNet helps in classifying the features.  
+  
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+  
   It was possible to achieve 100% Test accuracy with this model, even though the training data set was not huge the model was able to 100% Test accuracy which is evident that the choosen model is right.
 
 ### Test a Model on New Images ###
