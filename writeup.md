@@ -17,10 +17,7 @@ The goals / steps of this project are the following:
 [image2]: ./Output/data_augmentation.png "Data Statistics after data augmentation"
 [image3]: ./Output/before_after.png "Before and After GrayScaling"
 [image4]: ./Output/new_images.png "Traffic Signs"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+
 
 ---
 ### Writeup / README
@@ -50,9 +47,9 @@ I used the python library to calculate summary statistics of the traffic signs t
 
 #### 2. Include an exploratory visualization of the dataset.
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the training set data is distriuted. As it can be seen the data is not uniform and is distributed unevenly and there are many traffic signs that donot have more than 200 train images.
+Here is an exploratory visualization of the data set. It is a bar chart showing how the training set data is distriuted. As it can be seen the data is not uniform distributed and there are many traffic signs that donot have more than 200 train images.
 
-                                        __**Raw Data Statistics**__
+__**Raw Data Statistics**__
 ![Data Visualization](./Output/visualization.png)
 
 ### Design and Test a Model Architecture ###
@@ -64,10 +61,12 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
  
  Identify all the traffic signs which have less 1500 train data. Collect all similar traffic sign images and lables that fall in this category in buffers. Pass the extracted data to a function "expand_training_data". 
  
- expand_training_data function shall take one image at a time and shall
+ The function "expand_training_data"  shall take one image at a time and shall
+
     -  randomly rotate by +/-5 degrees 
     -  randomly change the brightness of the image.
- this function shall  continue this operation on the images untill total image (orignal data + new data ) size is around 1500 per traffic sign. 
+    
+ This function shall continue this operation on the images untill total image (orignal data + new data ) size is around 1500 per traffic sign. 
  
  The function "expand_training_data" shall return the new images and the new images are appened to the old image data set. Following image shows the result of Data Augmentation. It can be seen that after augmenting the data set has better uniformity.
  
@@ -87,43 +86,43 @@ My final model consisted of the following layers:
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x1 RGB image   							| 
 | Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x16 	|
-| SELU					|												|
+| SELU					| 28x28x16												|
 | Max pooling	      	| 2x2 stride,  outputs 14x14x16 				|
 | Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x32 	|
-| SELU					|												|
+| SELU					|	10x10x32											|
 | Max pooling	      	| 2x2 stride,  outputs 5x5x32 				|
 | Convolution 2x2	    | 1x1 stride, valid padding, outputs 4x4x64 	|
-| SELU					|												|
+| SELU					|	4x4x64											|
 | Max pooling	      	| 2x2 stride,  outputs 2x2x64 				|
 | Fully connected		| input 256, output 128       									|
-| SELU					|												|
-| Fully connected		| input 84, output 128        									|
-| SELU					|												|
+| SELU					|	128											|
+| Fully connected		| input 128, output 84        									|
+| SELU					|	84											|
 | DROPOUT					|						0.9						|
-| Fully connected		| input 43, output 128         									|
-| Softmax				|      									|
-|	reduce_mean					|												|
-|	AdamOptimizer					|												|
-|	minimizer					|												|
+| Fully connected		| input 84, output 43         									|
+| Softmax				| 43     									|
+|	reduce_mean					| 43												|
+|	AdamOptimizer					|	43											|
+|	minimizer					|	43											|
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate. ####
 
-To train the model, I used above mentioned model. The training data provided by UdaCity is augmented to have atleast 1500 images per traffic signs , using data augmentation Train Data Set was increased from 34799 to 79347 samples.
+To train the model, I used above mentioned architecture. The training data provided by UdaCity is augmented to have atleast 1500 images per traffic sign. After data augmentation,training dataset was increased from 34799 to 79347 samples.
 
 Following are the settings for hyperparameters
   - Batch Size : 256
   - EPOCHS : 100
   - Learning Rate : 0.002
 
-#### Choosing Maximum Accuracy: ####  
-It was observed that the accuracy of the model oscillating , so it is not neccassary that the last EPOCH has the maximum  accuracy. To ensure that model uses the maximum accuracy the accuracy after every EPOCH is stored in an array and if the new accuracy is maximum value till now then all the variables at the checkpoints were saved using tf.train.Saver tensor. By default tf.train.Saver tensor can store a maximum of 5 checkpoints variables , so at the end of training we will end up with 5 sets of variable data and the last saved variables correspond to the maximum accuracy. For testing the model last saved variables are restored as they correspond to maximum validation accuracy.
+ #### Choosing Maximum Accuracy: ####  
+  It was observed that the accuracy of the model was oscillating , so it was not neccassary that the last EPOCH has the maximum     accuracy. To ensure that model uses the maximum accuracy, the accuracy after every EPOCH is stored in an array and if the new accuracy is maximum value till now then all the variables at the checkpoints were saved using "tf.train.Saver" tensor. With default setting tf.train.Saver tensor can store a maximum of 5 checkpoints variables , so at the end of training we will end up with 5 sets of variable data and the last saved variables correspond to the maximum accuracy. For testing the model last saved variables are restored as they correspond to maximum validation accuracy.
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
-* test set accuracy of ?
+My final model results are: Following are my final results
+* Validation Set Accuracy : 96.395%
+* UdaCity Test Set Accuracy : 93.587%
+* Accuracy of New Images from Net : 100%
 
 If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
@@ -134,20 +133,27 @@ If an iterative approach was chosen:
   - Learning Rate was a bit slow 
   - Peak achievable accuracy was just 90%
   - Does not have dropout layer thus there was a chance of overfitting if the number of EPOCHs were increased.
+  
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
   I have tried many architectures to increase the accuracy. Following changes were done to the inital architecture. 
   
   #### Model Architecture: ####
-  - ###### DropOut:###### 
-    I started with Dropout after every layer (Convolution and Full Connected) but this has reduced the accuracy to 87%. Then applied Dropout only to Fully Connected Layers even this apporached affected the accuracy. So  finally decided to use dropout on last but one Fully Connected Layers.
-  - ###### No of Convolution Layers:###### 
-    Initial architecture was reducing the dataset size from 32 x 32 x 1 to 32 x 32 x 6 and at the maximum 16 layers by the end of second Convolution Layers. We have to recognize 43 traffic signs,i wanted to ensure that the number of filters on last Convolution Layer is more than 43. It was difficult to achieve this value without adding a thrid layer. I have changed the number of filters on first and second Convolution Layers too. Following configuration was used in the final model. This decision really helped  in increasing the accuracy. 
+  
+  - ###### DropOut: ###### 
+    I started with Dropout after every layer (Convolution and Full Connected) but this has reduced the accuracy to 87%. Then applied Dropout only to Fully Connected Layers, even this apporach affected the accuracy. So i finally decided to use dropout on last but one Fully Connected Layers.
+    
+  - ###### No of Convolution Layers: ###### 
+    Initial architecture was reducing the dataset size from 32 x 32 x 1 to 28 x 28 x 6 and at the maximum 16 layers by the end of second Convolution Layers. We have to recognize 43 traffic signs,i wanted to ensure that the number of filters on last Convolution Layer is more than 43. It was difficult to achieve this value without adding a thrid layer. I have changed the number of filters on first and second Convolution Layers too. Following configuration was used in the final model. This decision really helped  in increasing the accuracy. 
+    
     First Convolution Layer: 32X32x1 --> 28x28x16
     Second Convolution Layer: 14x14x16 --> 10x10x32
     Third Convolution Layer: 5x5x32 --> 4x4x64
+    
    After adding third layer i was able to get accuracies more than 94%
+   
   - ###### Activation Function: ######
      I have changed the activation fucntion from RELU to SELU as this move helped in getting validation accuracy of >90% with in first 5 EPOCHs. And this was a new activation function i wanted to try out the behavior of this function. 
+     
   - ###### Fully Connected Layer ######
      I have an additional Fully Connected Layer increase the accuracy. I could see an increase of 1% after adding the additional Fully Connected Layer.  
   
@@ -185,33 +191,122 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Speed limit (30km/h)     		| Speed limit (30km/h)    									| 
+| Right-of-way at the next intersection     			| Right-of-way at the next intersection 										|
+| Priority road					| Priority road											|
+| No entry	      		| No entry					 				|
+| General caution			| General caution     							|
+| Bumpy road			| Bumpy road     							|
+| Slippery road			| Slippery road     							|
+| Road work			| Road work     							|
+| Turn left ahead			| Turn left ahead     							|
+| Keep right			| Keep right    							|
 
-
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 10 of the 10 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of accuracy 93.587%
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 26th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+- For the first image, the model is sure that this is a Speed limit (30km/h) sign (probability of 1.0), and the image does contain a Speed limit (30km/h) sign. The top five soft max probabilities were
+  
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Speed limit (30km/h)   									| 
+| 6.77362829e-14     				| Speed limit (50km/h) 										|
+| 9.33591582e-20					| Speed limit (100km/h)											|
+| 3.21337252e-21	      			| Speed limit (120km/h)					 				|
+| 1.28336042e-21				    | Speed limit (80km/h)      							|
+
+
+- For the second image, the model is sure that this is a Right-of-way at the next intersection sign (probability of 1.0), and the image does contain a Right-of-way at the next intersection sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| 1.00         			| Right-of-way at the next intersection   									| 
+| 0     				| Speed limit (20km/h)										|
+| 0					| Speed limit (30km/h)											|
+| 0	      			| Speed limit (50km/h)				 				|
+| 0				    | Speed limit (60km/h)      							|
 
+- For the third image, the model is sure that this is a Priority road   sign (probability of 1.0), and the image does contain a Priority road sign. The top five soft max probabilities were
 
-For the second image ... 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Priority road   									| 
+| 5.07665491e-38     				| Bumpy road										|
+| 0					| Speed limit (20km/h)											|
+| 0	      			| Speed limit (30km/h)				 				|
+| 0				    | Speed limit (50km/h)      							|
 
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-#### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
+- For the fourth image, the model is sure that this is a No entry sign (probability of 1.0), and the image does contain a No entry sign. The top five soft max probabilities were
 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| No entry   									| 
+| 2.91724016e-20     				| No passing										|
+| 1.59261045e-29					| Stop											|
+| 0	      			| Speed limit (20km/h)				 				|
+| 0				    | Speed limit (30km/h)      							|
 
+- For the fifth image, the model is sure that this is a General caution sign (probability of 1.0), and the image does contain a General caution sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| General caution   									| 
+| 0     				| Speed limit (20km/h)										|
+| 0					| Speed limit (30km/h)											|
+| 0	      			| Speed limit (50km/h)				 				|
+| 0				    |Speed limit (60km/h)     							|
+
+- For the sixth image, the model is sure that this is a Bumpy road sign (probability of 1.0), and the image does contain a Bumpy road sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Bumpy road   									| 
+| 0     				| Speed limit (20km/h)										|
+| 0					| Speed limit (30km/h)											|
+| 0	      			| Speed limit (50km/h)				 				|
+| 0				    |Speed limit (60km/h)     							|
+
+- For the seventh image, the model is sure that this is a Bumpy road sign (probability of 1.0), and the image does contain a Bumpy road sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Slippery road   									| 
+| 8.89222559e-29     				| Right-of-way at the next intersection										|
+| 7.46798862e-34					| Beware of ice/snow											|
+| 0	      			| Speed limit (20km/h)				 				|
+| 0				    |Speed limit (30km/h)     							|
+
+- For the eighth image, the model is sure that this is a Road work sign (probability of 1.0), and the image does contain a Road work sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Road work   									| 
+| 0     				| Speed limit (20km/h)										|
+| 0					| Speed limit (30km/h)											|
+| 0	      			| Speed limit (50km/h)				 				|
+| 0				    |Speed limit (60km/h)     							|
+
+- For the nineth image, the model is sure that this is a Turn left ahead  sign (probability of 1.0), and the image does contain a Turn left ahead sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Turn left ahead   									| 
+| 0     				| Speed limit (20km/h)										|
+| 0					| Speed limit (30km/h)											|
+| 0	      			| Speed limit (50km/h)				 				|
+| 0				    |Speed limit (60km/h)     							|
+
+ [38,  0,  1,  2,  3]
+ 
+ - For the tenth image, the model is sure that this is a Keep right sign (probability of 1.0), and the image does contain a Keep right sign. The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 1.00         			| Keep right   									| 
+| 0     				| Speed limit (20km/h)										|
+| 0					| Speed limit (30km/h)											|
+| 0	      			| Speed limit (50km/h)				 				|
+| 0				    |Speed limit (60km/h)     							|
